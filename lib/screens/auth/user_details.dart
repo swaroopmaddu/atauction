@@ -103,7 +103,19 @@ class _UserDetailsState extends State<UserDetails> {
                                 ),
                               );
                             }).onError((error, stackTrace) {
-                              print(error);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Something is not right!'),
+                                  action: SnackBarAction(
+                                    label: 'Ok',
+                                    textColor: Colors.yellow,
+                                    onPressed: () {
+                                      ScaffoldMessenger.of(context)
+                                          .hideCurrentSnackBar();
+                                    },
+                                  ),
+                                ),
+                              );
                             });
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(

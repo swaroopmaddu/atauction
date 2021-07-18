@@ -1,7 +1,7 @@
 import 'package:atauction/models/Product.dart';
 import 'package:atauction/screens/SearchDelegate/productSearchDelegate.dart';
-import 'package:atauction/screens/productDetails/details_screen.dart';
 import 'package:atauction/screens/user_cart/UserCart.dart';
+import 'package:atauction/screens/your_products/winner_dart.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,10 +16,9 @@ class UserProducts extends StatefulWidget {
 }
 
 class _UserProductsState extends State<UserProducts> {
-  final db = FirebaseFirestore.instance;
-
-  final auth = FirebaseAuth.instance;
   // By default our first item will be selected
+  final db = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
 
   int selectedIndex = 0;
   bool isAfterToday(Timestamp timestamp) {
@@ -86,10 +85,14 @@ class _UserProductsState extends State<UserProducts> {
                                         as Map<dynamic, dynamic>);
                                 print(product);
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailsScreen(product: product)));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => WinnerDetails(
+                                      product: product,
+                                      winner: doc['bidder'].toString(),
+                                    ),
+                                  ),
+                                );
                               },
                               child: Card(
                                 child: Row(

@@ -153,7 +153,9 @@ class Menu extends StatelessWidget {
                           _handleSignOut();
                           Navigator.pop(context);
                           Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/login', (Route<dynamic> route) => false);
+                            '/login',
+                            (Route<dynamic> route) => false,
+                          );
                         },
                       ),
                     ],

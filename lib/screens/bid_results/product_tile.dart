@@ -96,7 +96,9 @@ class ProductTile extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'Sold at ',
+                            (!isAfterToday(doc['endDate']))
+                                ? 'Current Bid '
+                                : 'Sold at',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TextStyle(

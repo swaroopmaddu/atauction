@@ -103,7 +103,7 @@ class _WatchListState extends State<WatchList> {
                         height: MediaQuery.of(context).size.width - 100,
                       ),
                       Text(
-                        "No items in your Wishlist",
+                        "No items in your Watchlist",
                         style: TextStyle(fontSize: 18),
                       ),
                     ],
@@ -124,7 +124,7 @@ class _WatchListState extends State<WatchList> {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      title: Text("Your Wishlist"),
+      title: Text("Your Watchlist"),
       centerTitle: true,
       leading: IconButton(
         icon: SvgPicture.asset(

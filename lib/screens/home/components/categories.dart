@@ -30,14 +30,6 @@ class _CategoriesState extends State<Categories> {
 
   int selectedIndex = 0;
 
-  changeCategory(int val) {
-    setState(() {
-      if (selectedIndex < 5) {
-        selectedIndex += val;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -99,12 +91,13 @@ class _CategoriesState extends State<Categories> {
                               Product product = Product.fromMap(
                                   snapshot.data!.docs[index].data()
                                       as Map<dynamic, dynamic>);
-                              print(product);
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailsScreen(product: product)));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DetailsScreen(product: product),
+                                ),
+                              );
                             },
                             child: Card(
                               child: Row(

@@ -17,8 +17,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   AuthCredential? credential;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -67,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           margin: EdgeInsets.only(top: 30, bottom: 2),
                           child: SignInButton(
                             Buttons.Google,
-                            text: "Sign up with Google",
+                            text: "Sign in with Google",
                             onPressed: () {
                               _handleSignIn();
                             },

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class UserData {
   String fname, lname, email, mobile;
   String house, street, city, pin;

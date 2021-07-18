@@ -1,4 +1,3 @@
-import 'package:atauction/screens/productDetails/components/bottom_actions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:atauction/components/constants.dart';
 import 'package:atauction/models/Product.dart';
-import 'bidEnd_and_seedPrice.dart';
 import 'description.dart';
 
 class Body extends StatefulWidget {
   final String id;
+  final String winner;
 
-  const Body({required this.id});
+  const Body({required this.id, required this.winner});
 
   @override
   _BodyState createState() => _BodyState();
@@ -24,6 +23,7 @@ class _BodyState extends State<Body> {
   List<String> productsinWishlist = <String>[];
   final db = FirebaseFirestore.instance;
   bool loading = true;
+  late Map<String, dynamic> _WinnerData;
   @override
   void initState() {
     super.initState();
@@ -31,23 +31,11 @@ class _BodyState extends State<Body> {
   }
 
   getdata() async {
-    await db
-        .collection('users')
-        .doc(auth.currentUser?.email)
-        .get()
-        .then((value) {
+    await db.collection('users').doc(widget.winner).get().then((value) {
       if (value.exists) {
-        Map<String, dynamic> data = value.data() as Map<String, dynamic>;
-        if (data['wishlist'] == null) {
-          productsinWishlist = [];
-        } else {
-          List.from(data['wishlist']).forEach((element) {
-            productsinWishlist.add(element);
-          });
-        }
+        _WinnerData = value.data() as Map<String, dynamic>;
       }
     });
-    print(productsinWishlist);
 
     setState(() {
       loading = false;
@@ -114,16 +102,11 @@ class _BodyState extends State<Body> {
                               ),
                               child: Column(
                                 children: <Widget>[
-                                  BidEndAndSeedPrice(product: product),
-                                  SizedBox(height: kDefaultPaddin / 2),
-                                  Description(product: product),
-                                  SizedBox(height: kDefaultPaddin / 2),
-                                  BottomActions(
+                                  Description(
                                     product: product,
-                                    changeBid: changeBid,
-                                    productsinWishlist: productsinWishlist,
-                                    bidder: data['bidder'],
+                                    winnerData: _WinnerData,
                                   ),
+                                  SizedBox(height: kDefaultPaddin / 2),
                                 ],
                               ),
                             ),

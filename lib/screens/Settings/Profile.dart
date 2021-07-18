@@ -20,6 +20,11 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
+  //form text editing controllers
+  TextEditingController _fnameController = TextEditingController();
+  TextEditingController _lnameController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -53,7 +58,9 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   Map<String, dynamic> doc =
                       snapshot.data!.data() as Map<String, dynamic>;
                   UserData _userData = UserData.fromMap(doc);
-
+                  _fnameController.text = _userData.fname;
+                  _lnameController.text = _userData.lname;
+                  _mobileController.text = _userData.mobile;
                   return ListView(
                     children: <Widget>[
                       Column(
@@ -183,22 +190,44 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                             padding:
                                                 EdgeInsets.only(right: 10.0),
                                             child: new TextField(
-                                              controller: TextEditingController(
-                                                  text: _userData.fname),
+                                              controller: _fnameController,
                                               decoration: const InputDecoration(
                                                   hintText: "Your First Name"),
                                               enabled: !_status,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              onEditingComplete: () {
+                                                try {
+                                                  FocusScope.of(context)
+                                                      .nextFocus();
+                                                } on Exception catch (_) {
+                                                  print("Error");
+                                                  FocusScope.of(context)
+                                                      .unfocus();
+                                                }
+                                              },
                                             ),
                                           ),
                                           flex: 2,
                                         ),
                                         Flexible(
                                           child: new TextField(
-                                            controller: TextEditingController(
-                                                text: _userData.lname),
+                                            controller: _lnameController,
                                             decoration: const InputDecoration(
                                                 hintText: "Your Last Name"),
                                             enabled: !_status,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onEditingComplete: () {
+                                              try {
+                                                FocusScope.of(context)
+                                                    .nextFocus();
+                                              } on Exception catch (_) {
+                                                print("Error");
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              }
+                                            },
                                           ),
                                           flex: 2,
                                         ),
@@ -274,12 +303,16 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                                       children: <Widget>[
                                         new Flexible(
                                           child: new TextField(
-                                            controller: TextEditingController(
-                                                text: _userData.mobile),
+                                            controller: _mobileController,
                                             decoration: const InputDecoration(
                                                 hintText:
                                                     "Enter Mobile Number"),
                                             enabled: !_status,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            onEditingComplete: () {
+                                              FocusScope.of(context).unfocus();
+                                            },
                                           ),
                                         ),
                                       ],
@@ -317,18 +350,28 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             child: Padding(
               padding: EdgeInsets.only(right: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: new ElevatedButton(
                 child: new Text("Save"),
-                textColor: Colors.white,
-                color: Colors.green,
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  primary: Colors.green,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(20.0)),
+                ),
                 onPressed: () {
                   setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
+                    firestore
+                        .collection("users")
+                        .doc(auth.currentUser?.email)
+                        .update({
+                      'fname': _fnameController.text,
+                      'lname': _lnameController.text,
+                      'contact': _mobileController.text
+                    }).then((value) {
+                      _status = true;
+                    });
                   });
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,
@@ -337,18 +380,20 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
             child: Padding(
               padding: EdgeInsets.only(left: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: new ElevatedButton(
                 child: new Text("Cancel"),
-                textColor: Colors.white,
-                color: Colors.red,
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  primary: Colors.red,
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(20.0),
+                  ),
+                ),
                 onPressed: () {
                   setState(() {
                     _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
                   });
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,

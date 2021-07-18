@@ -20,6 +20,11 @@ class AddressState extends State<Address> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
+  //form text editing controllers
+  TextEditingController _houseController = TextEditingController();
+  TextEditingController _streetController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _pincodeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -53,7 +58,10 @@ class AddressState extends State<Address> with SingleTickerProviderStateMixin {
                   Map<String, dynamic> doc =
                       snapshot.data!.data() as Map<String, dynamic>;
                   UserData _userData = UserData.fromMap(doc);
-
+                  _houseController.text = _userData.house;
+                  _streetController.text = _userData.street;
+                  _cityController.text = _userData.city;
+                  _pincodeController.text = _userData.pin;
                   return ListView(
                     children: <Widget>[
                       Column(
@@ -102,96 +110,28 @@ class AddressState extends State<Address> with SingleTickerProviderStateMixin {
                                         ],
                                       )),
                                   Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 25.0, right: 25.0, top: 25.0),
-                                      child: new Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Container(
-                                              child: new Text(
-                                                'Address Line 1',
-                                                style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            flex: 2,
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              child: new Text(
-                                                'Address Line 2',
-                                                style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            flex: 2,
-                                          ),
-                                        ],
-                                      )),
-                                  Padding(
                                     padding: EdgeInsets.only(
-                                        left: 25.0, right: 25.0, top: 2.0),
+                                        left: 25.0, right: 25.0, top: 25.0),
                                     child: new Row(
                                       mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       children: <Widget>[
-                                        Flexible(
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 10.0),
-                                            child: new TextField(
-                                              controller: TextEditingController(
-                                                  text: _userData.fname),
-                                              decoration: const InputDecoration(
-                                                  hintText: "Address Line 1"),
-                                              enabled: !_status,
+                                        new Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            new Text(
+                                              'Address Line 1',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                          flex: 2,
-                                        ),
-                                        Flexible(
-                                          child: new TextField(
-                                            controller: TextEditingController(
-                                                text: _userData.lname),
-                                            decoration: const InputDecoration(
-                                                hintText: "Address Line 2"),
-                                            enabled: !_status,
-                                          ),
-                                          flex: 2,
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 25.0, right: 25.0, top: 25.0),
-                                      child: new Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: <Widget>[
-                                          new Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              new Text(
-                                                'City',
-                                                style: TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )),
                                   Padding(
                                     padding: EdgeInsets.only(
                                         left: 25.0, right: 25.0, top: 2.0),
@@ -200,11 +140,127 @@ class AddressState extends State<Address> with SingleTickerProviderStateMixin {
                                       children: <Widget>[
                                         new Flexible(
                                           child: new TextField(
-                                            controller: TextEditingController(
-                                                text: _userData.email),
+                                            controller: _houseController,
+                                            decoration: const InputDecoration(
+                                                hintText:
+                                                    "Enter Your House/Apartment Number"),
+                                            enabled: !_status,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onEditingComplete: () {
+                                              try {
+                                                FocusScope.of(context)
+                                                    .nextFocus();
+                                              } on Exception catch (_) {
+                                                print("Error");
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 25.0, right: 25.0, top: 25.0),
+                                    child: new Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        new Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            new Text(
+                                              'Address Line 2',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 25.0, right: 25.0, top: 2.0),
+                                    child: new Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        new Flexible(
+                                          child: new TextField(
+                                            controller: _streetController,
+                                            decoration: const InputDecoration(
+                                                hintText: "Enter your Street"),
+                                            enabled: !_status,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onEditingComplete: () {
+                                              try {
+                                                FocusScope.of(context)
+                                                    .nextFocus();
+                                              } on Exception catch (_) {
+                                                print("Error");
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 25.0, right: 25.0, top: 25.0),
+                                    child: new Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        new Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            new Text(
+                                              'City',
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 25.0, right: 25.0, top: 2.0),
+                                    child: new Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        new Flexible(
+                                          child: new TextField(
+                                            controller: _cityController,
                                             decoration: const InputDecoration(
                                                 hintText: "Enter Your City"),
-                                            enabled: false,
+                                            enabled: !_status,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            onEditingComplete: () {
+                                              try {
+                                                FocusScope.of(context)
+                                                    .nextFocus();
+                                              } on Exception catch (_) {
+                                                print("Error");
+                                                FocusScope.of(context)
+                                                    .unfocus();
+                                              }
+                                            },
                                           ),
                                         ),
                                       ],
@@ -241,12 +297,16 @@ class AddressState extends State<Address> with SingleTickerProviderStateMixin {
                                       children: <Widget>[
                                         new Flexible(
                                           child: new TextField(
-                                            controller: TextEditingController(
-                                                text: _userData.mobile),
+                                            controller: _pincodeController,
                                             decoration: const InputDecoration(
                                                 hintText:
-                                                    "Enter Mobile Number"),
+                                                    "Enter ZipCode/Pincode"),
                                             enabled: !_status,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            onEditingComplete: () {
+                                              FocusScope.of(context).unfocus();
+                                            },
                                           ),
                                         ),
                                       ],
@@ -284,18 +344,29 @@ class AddressState extends State<Address> with SingleTickerProviderStateMixin {
             child: Padding(
               padding: EdgeInsets.only(right: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: new ElevatedButton(
                 child: new Text("Save"),
-                textColor: Colors.white,
-                color: Colors.green,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  onPrimary: Colors.white,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(20.0)),
+                ),
                 onPressed: () {
                   setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
+                    firestore
+                        .collection("users")
+                        .doc(auth.currentUser?.email)
+                        .update({
+                      'house': _houseController.text,
+                      'street': _streetController.text,
+                      'city': _cityController.text,
+                      'pincode': _pincodeController.text
+                    }).then((value) {
+                      _status = true;
+                    });
                   });
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,
@@ -304,18 +375,20 @@ class AddressState extends State<Address> with SingleTickerProviderStateMixin {
             child: Padding(
               padding: EdgeInsets.only(left: 10.0),
               child: Container(
-                  child: new RaisedButton(
+                  child: ElevatedButton(
                 child: new Text("Cancel"),
-                textColor: Colors.white,
-                color: Colors.red,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  onPrimary: Colors.white,
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(20.0),
+                  ),
+                ),
                 onPressed: () {
                   setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
+                    _status = false;
                   });
                 },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
               )),
             ),
             flex: 2,

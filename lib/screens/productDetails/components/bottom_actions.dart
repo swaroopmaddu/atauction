@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:atauction/components/constants.dart';
 
-class BidCounter extends StatefulWidget {
-  BidCounter(
+class BottomActions extends StatefulWidget {
+  BottomActions(
       {required this.product,
       required this.changeBid,
       required this.productsinWishlist,
@@ -16,10 +16,10 @@ class BidCounter extends StatefulWidget {
   final String bidder;
   List<String> productsinWishlist = [];
   @override
-  _BidCounterState createState() => _BidCounterState();
+  _BottomActionsState createState() => _BottomActionsState();
 }
 
-class _BidCounterState extends State<BidCounter> {
+class _BottomActionsState extends State<BottomActions> {
   int yourBid = 0;
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -150,18 +150,12 @@ class _BidCounterState extends State<BidCounter> {
                                 int currentPrice =
                                     int.parse(widget.product.currentBid) +
                                         yourBid;
+                                var userEmail = auth.currentUser?.email;
                                 FirebaseFirestore.instance
                                     .collection('products')
                                     .doc(widget.product.uid)
                                     .update({
-                                  'currentBid': currentPrice.toString(),
-                                  'bidder': auth.currentUser?.email,
-                                  'biddersList': FieldValue.arrayUnion(
-                                      [auth.currentUser?.email]),
-                                  'bids': {
-                                    auth.currentUser?.email:
-                                        currentPrice.toString()
-                                  }
+                                  'bids.${userEmail}': currentPrice.toString()
                                 }).then((value) {
                                   FirebaseFirestore.instance
                                       .collection('users')
