@@ -86,7 +86,7 @@ class _BodyState extends State<Body> {
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(top: size.height * 0.3),
+                              margin: EdgeInsets.only(top: size.height * 0.27),
                               padding: EdgeInsets.only(
                                 top: size.height * 0.12,
                                 left: kDefaultPaddin,
@@ -102,7 +102,7 @@ class _BodyState extends State<Body> {
                               ),
                               child: Column(
                                 children: <Widget>[
-                                  Description(
+                                  WinnerDescription(
                                     product: product,
                                     winnerData: _WinnerData,
                                   ),
@@ -174,10 +174,11 @@ class _BodyState extends State<Body> {
                                                   (context, imageProvider) =>
                                                       Container(
                                                 decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover,
-                                                )),
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
                                               ),
                                               progressIndicatorBuilder:
                                                   (context, url,
@@ -217,11 +218,6 @@ class _BodyState extends State<Body> {
               );
             },
           );
-  }
-
-  void changeBid(int value) {
-    yourBid = value;
-    print(yourBid);
   }
 }
 

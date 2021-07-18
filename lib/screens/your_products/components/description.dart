@@ -2,8 +2,8 @@ import 'package:atauction/components/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:atauction/models/Product.dart';
 
-class Description extends StatelessWidget {
-  const Description({required this.product, required this.winnerData});
+class WinnerDescription extends StatelessWidget {
+  const WinnerDescription({required this.product, required this.winnerData});
   final Map<String, dynamic> winnerData;
   final Product product;
 
@@ -21,30 +21,26 @@ class Description extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "This Item was sold at ",
+              "This Item was sold at ₹",
               style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
+                  color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),
             ),
             Text(
               product.currentBid,
               style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
+                  color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),
         Container(
           child: Column(
             children: [
-              _buldTextRow("Winner", "Maddu Swaroop"),
-              _buldTextRow("Sold at", product.currentBid),
-              _buldTextRow("Address Line 1", winnerData["house"]),
-              _buldTextRow("Address Line 2", winnerData["street"]),
-              _buldTextRow("City", winnerData["city"]),
-              _buldTextRow("Pincode", winnerData["pincode"]),
+              _buldTextRow("Winner", "Maddu Swaroop", context),
+              _buldTextRow("Sold at", product.currentBid, context),
+              _buldTextRow("Address Line 1", winnerData["house"], context),
+              _buldTextRow("Address Line 2", winnerData["street"], context),
+              _buldTextRow("City", winnerData["city"], context),
+              _buldTextRow("Pincode", winnerData["pincode"], context),
             ],
           ),
         )
@@ -52,12 +48,12 @@ class Description extends StatelessWidget {
     );
   }
 
-  _buldTextRow(String key, String value) {
+  _buldTextRow(String key, String value, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(width: MediaQuery.of(context).size.width * 0.15),
           Text(
             key,
             style: TextStyle(

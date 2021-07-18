@@ -7,13 +7,15 @@ import 'package:atauction/components/constants.dart';
 
 class BottomActions extends StatefulWidget {
   BottomActions(
-      {required this.product,
+      {required this.bids,
+      required this.product,
       required this.changeBid,
       required this.productsinWishlist,
       required this.bidder});
   final Product product;
   final Function changeBid;
   final String bidder;
+  Map<String, dynamic> bids;
   List<String> productsinWishlist = [];
   @override
   _BottomActionsState createState() => _BottomActionsState();
@@ -147,19 +149,26 @@ class _BottomActionsState extends State<BottomActions> {
                                   ),
                                 );
                               } else {
+                                String email =
+                                    auth.currentUser?.email ?? "anonymous";
                                 int currentPrice =
                                     int.parse(widget.product.currentBid) +
                                         yourBid;
-                                var userEmail = auth.currentUser?.email;
+                                widget.bids[email] = currentPrice.toString();
+
                                 FirebaseFirestore.instance
                                     .collection('products')
                                     .doc(widget.product.uid)
                                     .update({
-                                  'bids.${userEmail}': currentPrice.toString()
+                                  'currentBid': currentPrice.toString(),
+                                  'bidder': auth.currentUser?.email,
+                                  'biddersList': FieldValue.arrayUnion(
+                                      [auth.currentUser?.email]),
+                                  'bids': widget.bids
                                 }).then((value) {
                                   FirebaseFirestore.instance
                                       .collection('users')
-                                      .doc(auth.currentUser?.email)
+                                      .doc(email)
                                       .update({
                                     'cart': FieldValue.arrayUnion(
                                         [widget.product.uid])

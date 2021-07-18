@@ -89,6 +89,7 @@ class _BodyState extends State<Body> {
                 Map<String, dynamic> data =
                     snapshot.data!.data() as Map<String, dynamic>;
                 List<dynamic> bidders = data['biddersList'];
+                Map<String, dynamic> bids = data["bids"];
                 Product product = Product.fromMap(data);
                 return SingleChildScrollView(
                   child: Column(
@@ -119,6 +120,7 @@ class _BodyState extends State<Body> {
                                   Description(product: product),
                                   SizedBox(height: kDefaultPaddin / 2),
                                   BottomActions(
+                                    bids: bids,
                                     product: product,
                                     changeBid: changeBid,
                                     productsinWishlist: productsinWishlist,
@@ -164,7 +166,7 @@ class _BodyState extends State<Body> {
                                             ),
                                             TextSpan(
                                               text:
-                                                  "\nBidders ${bidders.length}",
+                                                  "\nBidders ${bidders.toSet().length}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle1
