@@ -1,9 +1,7 @@
-import 'package:atauction/components/constants.dart';
 import 'package:atauction/screens/addProduct/addproduct.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:atauction/screens/auth/login.dart';
-import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

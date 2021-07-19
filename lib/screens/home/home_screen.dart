@@ -4,7 +4,7 @@ import 'package:atauction/screens/home/components/categories.dart';
 import 'package:atauction/screens/user_cart/UserCart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'dart:math';
 
 final homeScreenKey = GlobalKey();

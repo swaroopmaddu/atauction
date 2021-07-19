@@ -1,4 +1,4 @@
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'package:atauction/screens/Settings/settings.dart';
 import 'package:atauction/screens/home/home_screen.dart';
 import 'package:atauction/screens/bid_results/bid_results.dart';

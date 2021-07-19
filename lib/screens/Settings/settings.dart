@@ -1,4 +1,4 @@
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'package:atauction/screens/Settings/Profile.dart';
 import 'package:atauction/screens/Settings/address.dart';
 import 'package:firebase_auth/firebase_auth.dart';

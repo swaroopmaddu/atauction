@@ -1,4 +1,4 @@
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'package:atauction/screens/SearchDelegate/productSearchDelegate.dart';
 import 'package:atauction/screens/user_cart/product_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'package:atauction/models/Product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;

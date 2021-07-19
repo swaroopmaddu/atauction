@@ -4,9 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 
 // We need satefull widget for our categories
+// ignore: non_constant_identifier_names
 GlobalKey<_CategoriesState> cat_key = GlobalKey();
 
 class Categories extends StatefulWidget {

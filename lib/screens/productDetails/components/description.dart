@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'package:atauction/models/Product.dart';
 
 class Description extends StatelessWidget {

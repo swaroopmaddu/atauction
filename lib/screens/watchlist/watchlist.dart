@@ -1,4 +1,4 @@
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'package:atauction/screens/SearchDelegate/productSearchDelegate.dart';
 import 'package:atauction/screens/user_cart/UserCart.dart';
 import 'package:atauction/screens/watchlist/product_tile.dart';

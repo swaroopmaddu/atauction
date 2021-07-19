@@ -1,5 +1,5 @@
 import 'package:atauction/models/Product.dart';
-import 'package:atauction/components/constants.dart';
+import 'package:atauction/constants/constants.dart';
 import 'package:atauction/screens/productDetails/components/body.dart';
 import 'package:atauction/screens/user_cart/UserCart.dart';
 import 'package:flutter/material.dart';
