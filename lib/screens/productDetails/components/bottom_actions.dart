@@ -243,7 +243,13 @@ class _BottomActionsState extends State<BottomActions> {
                             size: 32,
                           ),
                           onPressed: () {
-                            print("REMOVING");
+                            ScaffoldMessenger.of(context)
+                                .removeCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Removing from watchlist'),
+                              ),
+                            );
                             FirebaseFirestore.instance
                                 .collection('users')
                                 .doc(auth.currentUser?.email)
@@ -264,7 +270,13 @@ class _BottomActionsState extends State<BottomActions> {
                             size: 32,
                           ),
                           onPressed: () {
-                            print("Adding in Wishilist");
+                            ScaffoldMessenger.of(context)
+                                .removeCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Adding to watchlist'),
+                              ),
+                            );
                             FirebaseFirestore.instance
                                 .collection('users')
                                 .doc(auth.currentUser?.email)

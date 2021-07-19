@@ -48,7 +48,7 @@ class _CategoriesState extends State<Categories> {
         Padding(
           padding: const EdgeInsets.all(3.0),
           child: SizedBox(
-            height: MediaQuery.of(context).size.height - 116,
+            height: MediaQuery.of(context).size.height - 123,
             child: StreamBuilder<QuerySnapshot>(
                 stream: db
                     .collection('products')

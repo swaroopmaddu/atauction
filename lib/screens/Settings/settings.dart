@@ -4,6 +4,8 @@ import 'package:atauction/screens/Settings/address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -15,6 +17,9 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _button1 = true;
   bool _button2 = true;
   bool _button3 = false;
+  bool fullScreen = false;
+  static GoogleSignIn _googleSignIn = GoogleSignIn();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +95,34 @@ class _SettingsPageState extends State<SettingsPage> {
             InkWell(
               onTap: () {},
               child: buildAccountOptionRow(context, "Privacy and security"),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Full Screen",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600]),
+                ),
+                Transform.scale(
+                  scale: 0.7,
+                  child: CupertinoSwitch(
+                    value: fullScreen,
+                    onChanged: (bool val) {
+                      print(val);
+                      setState(() {
+                        fullScreen = val;
+                        fullScreen
+                            ? SystemChrome.setEnabledSystemUIOverlays([])
+                            : SystemChrome.setEnabledSystemUIOverlays(
+                                SystemUiOverlay.values);
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 40,
@@ -215,6 +248,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _handleSignOut() async {
     try {
       await auth.signOut();
+      await _googleSignIn.signOut();
     } catch (error) {
       print(error);
     }

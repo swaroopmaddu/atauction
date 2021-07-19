@@ -220,6 +220,8 @@ class AaddProducrState extends State<AddProduct> {
                                         fontWeight: FontWeight.w500),
                                   ),
                                   onChanged: (val) {
+                                    FocusScope.of(context).unfocus();
+
                                     setState(() {
                                       _category = val;
                                     });
@@ -268,8 +270,6 @@ class AaddProducrState extends State<AddProduct> {
                               style: TextStyle(color: Colors.white)),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // If the form is valid, display a snackbar. In the real world,
-                              // you'd often call a server or save the information in a database.
                               addProductToCollection().then((value) {
                                 _descController.clear();
                                 _nameController.clear();
@@ -342,7 +342,8 @@ class AaddProducrState extends State<AddProduct> {
       data.addAll({
         'biddersList': [],
         'bidder': auth.currentUser?.email,
-        'owner': auth.currentUser?.email
+        'owner': auth.currentUser?.email,
+        'bids': {auth.currentUser?.email: _priceController.text}
       });
       return products.doc(_product?.uid).set(data).then((value) {
         setState(() {

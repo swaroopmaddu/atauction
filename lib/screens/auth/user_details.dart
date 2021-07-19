@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserDetails extends StatefulWidget {
   const UserDetails({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class UserDetails extends StatefulWidget {
 class _UserDetailsState extends State<UserDetails> {
   final _formKey = GlobalKey<FormState>();
   FirebaseAuth auth = FirebaseAuth.instance;
+  static GoogleSignIn _googleSignIn = GoogleSignIn();
 
   //form text editing controllers
   TextEditingController _fnameController = TextEditingController();
@@ -136,6 +138,32 @@ class _UserDetailsState extends State<UserDetails> {
                         },
                       )
                     ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have and account ",
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _handleSignOut();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/login',
+                            (Route<dynamic> route) => false,
+                          );
+                        },
+                        child: Text(
+                          "Sign in here",
+                          style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
                   )
                 ],
               ),
@@ -144,6 +172,15 @@ class _UserDetailsState extends State<UserDetails> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleSignOut() async {
+    try {
+      await auth.signOut();
+      await _googleSignIn.signOut();
+    } catch (error) {
+      print(error);
+    }
   }
 
   CupertinoTextFormFieldRow customTextField(

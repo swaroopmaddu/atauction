@@ -35,7 +35,8 @@ class WinnerDescription extends StatelessWidget {
         Container(
           child: Column(
             children: [
-              _buldTextRow("Winner", "Maddu Swaroop", context),
+              _buldTextRow("Winner",
+                  winnerData["fname"] + " " + winnerData["lname"], context),
               _buldTextRow("Sold at", product.currentBid, context),
               _buldTextRow("Address Line 1", winnerData["house"], context),
               _buldTextRow("Address Line 2", winnerData["street"], context),
