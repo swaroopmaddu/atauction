@@ -5,16 +5,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:atauction/constants/constants.dart';
 
+// ignore: must_be_immutable
 class BottomActions extends StatefulWidget {
   BottomActions(
       {required this.bids,
       required this.product,
       required this.changeBid,
       required this.productsinWishlist,
-      required this.bidder});
+      required this.bidder,
+      required this.owner});
   final Product product;
   final Function changeBid;
   final String bidder;
+  final String owner;
   Map<String, dynamic> bids;
   List<String> productsinWishlist = [];
   @override
@@ -122,83 +125,16 @@ class _BottomActionsState extends State<BottomActions> {
                     ? Image.asset('assets/images/win.png')
                     : Image.asset('assets/images/lose.png'),
               ),
-              (widget.product.endDate.isAfter(DateTime.now()))
+              (widget.owner == auth.currentUser?.email)
                   ? Expanded(
-                      child: SizedBox(
-                        height: 50,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18)),
-                              primary: kPrimary,
-                            ),
-                            child: Text(
-                              "Place Bid".toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPressed: () {
-                              if (yourBid == 0) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Cannot place bid. Your bid shouble be greater than current bid'),
-                                  ),
-                                );
-                              } else {
-                                String email =
-                                    auth.currentUser?.email ?? "anonymous";
-                                int currentPrice =
-                                    int.parse(widget.product.currentBid) +
-                                        yourBid;
-                                widget.bids[email] = currentPrice.toString();
-
-                                FirebaseFirestore.instance
-                                    .collection('products')
-                                    .doc(widget.product.uid)
-                                    .update({
-                                  'currentBid': currentPrice.toString(),
-                                  'bidder': auth.currentUser?.email,
-                                  'biddersList': FieldValue.arrayUnion(
-                                      [auth.currentUser?.email]),
-                                  'bids': widget.bids
-                                }).then((value) {
-                                  FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(email)
-                                      .update({
-                                    'cart': FieldValue.arrayUnion(
-                                        [widget.product.uid])
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Success'),
-                                    ),
-                                  );
-                                }).onError((error, stackTrace) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Error while updating'),
-                                    ),
-                                  );
-                                });
-                              }
-                              yourBid = 0;
-                            }),
-                      ),
-                    )
-                  : Expanded(
                       child: SizedBox(
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content:
-                                    Text('Bidding is closed for this item'),
+                                content: Text(
+                                    'This was your Product. So you cannot place a bid.'),
                                 action: SnackBarAction(
                                   label: 'Ok',
                                   textColor: Colors.yellow,
@@ -216,7 +152,7 @@ class _BottomActionsState extends State<BottomActions> {
                             primary: Colors.redAccent,
                           ),
                           child: Text(
-                            "Bidding Closed".toUpperCase(),
+                            "Not accepted".toUpperCase(),
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
@@ -225,7 +161,114 @@ class _BottomActionsState extends State<BottomActions> {
                           ),
                         ),
                       ),
-                    ),
+                    )
+                  : (widget.product.endDate.isAfter(DateTime.now()))
+                      ? Expanded(
+                          child: SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18)),
+                                  primary: kPrimary,
+                                ),
+                                child: Text(
+                                  "Place Bid".toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (yourBid == 0) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Cannot place bid. Your bid shouble be greater than current bid'),
+                                      ),
+                                    );
+                                  } else {
+                                    String email =
+                                        auth.currentUser?.email ?? "anonymous";
+                                    int currentPrice =
+                                        int.parse(widget.product.currentBid) +
+                                            yourBid;
+                                    widget.bids[email] =
+                                        currentPrice.toString();
+
+                                    FirebaseFirestore.instance
+                                        .collection('products')
+                                        .doc(widget.product.uid)
+                                        .update({
+                                      'currentBid': currentPrice.toString(),
+                                      'bidder': auth.currentUser?.email,
+                                      'biddersList': FieldValue.arrayUnion(
+                                          [auth.currentUser?.email]),
+                                      'bids': widget.bids
+                                    }).then((value) {
+                                      FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(email)
+                                          .update({
+                                        'cart': FieldValue.arrayUnion(
+                                            [widget.product.uid])
+                                      });
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text('Success'),
+                                        ),
+                                      );
+                                    }).onError((error, stackTrace) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text('Error while updating'),
+                                        ),
+                                      );
+                                    });
+                                  }
+                                  yourBid = 0;
+                                }),
+                          ),
+                        )
+                      : Expanded(
+                          child: SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content:
+                                        Text('Bidding is closed for this item'),
+                                    action: SnackBarAction(
+                                      label: 'Ok',
+                                      textColor: Colors.yellow,
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)),
+                                primary: Colors.redAccent,
+                              ),
+                              child: Text(
+                                "Bidding Closed".toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
               InkWell(
                 child: Container(
                   margin: EdgeInsets.only(left: kDefaultPaddin),
